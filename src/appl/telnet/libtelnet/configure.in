@@ -1,0 +1,21 @@
+AC_INIT(auth.c)
+CONFIG_RULES
+AC_PROG_ARCHIVE
+AC_PROG_ARCHIVE_ADD
+AC_PROG_RANLIB
+AC_REPLACE_FUNCS([strcasecmp strdup setsid strerror strftime getopt herror parsetos])
+AC_CHECK_FUNCS(setenv unsetenv getenv gettosbyname cgetent)
+AC_CHECK_HEADERS(stdlib.h string.h)
+LIBOBJS="$LIBOBJS getent.o"
+if test $ac_cv_func_setenv = no || test $ac_cv_func_unsetenv = no \
+  || test $ac_cv_func_getenv = no; then
+  LIBOBJS="$LIBOBJS setenv.o"
+fi
+AC_CONST
+if test "$KRB4_LIB" = ''; then
+	AC_MSG_RESULT(No Kerberos 4 authentication)
+else
+	AC_MSG_RESULT(Kerberos 4 authentication enabled)
+	AC_DEFINE(KRB4)
+fi
+V5_AC_OUTPUT_MAKEFILE
